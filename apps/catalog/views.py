@@ -24,8 +24,6 @@ def catalog(request):
         'products': page_obj.object_list,
     })
 
-from django.conf import settings
-from django.shortcuts import render
 
 def about(request):
     readme_content = "README.md not found."
