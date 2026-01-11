@@ -1,0 +1,96 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Catalog{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Auto Parts Catalog</h1>
+<div class="row">
+
+    {% for product in products %}
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card h-100">
+                <div class="card-body bg-light d-flex flex-column">
+                    <img src="{{ product.image_or_placeholder }}"
+                         class="img-fluid rounded mb-3"
+                         alt="{{ product.title }}">
+                    <h5 class="card-title">{{ product.title }}</h5>
+                    <p class="card-text text-muted">
+                        {{ product.short_description }}
+                    </p>
+                    <!-- Availability -->
+                    <span class="badge {{ product.stock_status.css }} mb-2">
+                        {{ product.stock_status.text }}
+                    </span>
+                    <!-- Price -->
+                    <div class="mt-auto">
+                        <strong>{{ product.price }} $</strong>
+                    </div>
+                                <!-- Entire card clickable -->
+                    <a href="{% url 'product_detail' product.slug %}"
+                       class="stretched-link"
+                       aria-label="View {{ product.title }}">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    {% endfor %}
+</div>
+
+
+<!--  Catalog pagination  -->
+
+{% if page_obj.paginator.num_pages > 1 %}  <!-- total number of pages -->
+<nav aria-label="Catalog pagination">
+    <ul class="pagination justify-content-center mt-4">
+
+        <!-- Previous -->
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                    &laquo;
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&laquo;</span>
+            </li>
+        {% endif %}
+
+        <!-- Page numbers -->
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Next -->
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                    &raquo;
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&raquo;</span>
+            </li>
+        {% endif %}
+
+    </ul>
+</nav>
+{% endif %}
+
+
+{% endblock %}
+
+

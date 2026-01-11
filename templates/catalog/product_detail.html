@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ product.title }}{% endblock %}
+
+{% block content %}
+
+<!-- Breadcrumbs -->
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+
+        <li class="breadcrumb-item">
+            <a href="{% url 'catalog' %}">Catalog</a>
+        </li>
+
+        <li class="breadcrumb-item active" aria-current="page">
+            {{ product.title }}
+        </li>
+
+    </ol>
+</nav>
+
+<div class="row">
+
+    <!-- Product image -->
+    <div class="col-12 col-md-5 mb-4">
+        <img src="{{ product.image_or_placeholder }}"
+             class="img-fluid border"
+             alt="{{ product.title }}">
+    </div>
+
+    <!-- Product info -->
+    <div class="col-12 col-md-7">
+        <h1 class="mb-3">{{ product.title }}</h1>
+
+        <!-- Availability -->
+        <span class="badge {{ product.stock_status.css }} mb-2">
+                        {{ product.stock_status.text }}
+        </span>
+
+        <!-- Price -->
+        <p class="fs-4 fw-bold">
+            ${{ product.price }}
+        </p>
+
+    </div>
+
+</div>
+
+<hr class="my-4">
+
+<!-- Detailed description -->
+<h4>Description</h4>
+<p>
+    {{ product.description }}
+</p>
+
+{% endblock %}

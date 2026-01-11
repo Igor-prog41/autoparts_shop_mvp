@@ -1,0 +1,45 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.swp
+*.swo
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Django
+*.log
+*.pot
+*.py[cod]
+db.sqlite3
+/media/
+.env
+/staticfiles/
+*.sqlite3
+
+# Cloudinary / uploads
+uploads/
+products/
+
+# VSCode / PyCharm
+.vscode/
+.idea/
+
+# Environment / Secrets
+.env
+.env.*
+.venv/
+
+# Node / Frontend (если есть)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Misc
+*.DS_Store
+*.bak
+*.tmp
+
