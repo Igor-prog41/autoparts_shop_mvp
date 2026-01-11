@@ -6,6 +6,7 @@ from django.conf import settings
 from pathlib import Path
 import markdown
 
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 from .models import Product
 
 
@@ -26,20 +27,11 @@ def catalog(request):
 
 
 def about(request):
-    readme_path = Path(settings.BASE_DIR) / "README.md"
-
+    readme_path = BASE_DIR / "README.md"
+    readme_content = ""
     if readme_path.exists():
-        md_text = readme_path.read_text(encoding="utf-8")
-        html_content = markdown.markdown(
-            md_text,
-            extensions=["fenced_code", "tables"]
-        )
-    else:
-        html_content = "<p>README.md not found.</p>"
-
-    return render(request, 'catalog/about.html', {
-        "content": html_content
-    })
+        readme_content = readme_path.read_text(encoding="utf-8")
+    return render(request, "about.html", {"readme_content": readme_content})
 
 
 def product_detail(request, slug):
