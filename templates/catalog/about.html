@@ -6,6 +6,6 @@
 
 {% block content %}
 <div class="container my-5">
-<pre>{{ readme_content }}</pre>
+<pre>{{ readme_content|safe }}</pre>
 </div>
 {% endblock %}
