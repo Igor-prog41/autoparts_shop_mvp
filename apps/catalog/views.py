@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.conf import settings
 from pathlib import Path
 import markdown
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 from .models import Product
@@ -26,14 +27,16 @@ def catalog(request):
 
 
 def about(request):
-    readme_content = "README.md not found."
+    readme_html = "<p>README.md not found.</p>"
 
-    try:
-        readme_path = settings.BASE_DIR / "README.md"
-        if readme_path.exists():
-            readme_content = readme_path.read_text(encoding="utf-8")
-    except Exception as e:
-        readme_content = f"Error loading README.md: {e}"
+    readme_path = os.path.join(settings.BASE_DIR, "README.md")
+
+    if os.path.exists(readme_path):
+        with open(readme_path, "r", encoding="utf-8", errors="ignore") as f:
+            readme_html = markdown.markdown(
+                f.read(),
+                extensions=["extra", "tables", "toc"]
+            )
 
     return render(
         request,
