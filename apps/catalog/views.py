@@ -41,7 +41,7 @@ def about(request):
     return render(
         request,
         "catalog/about.html",
-        {"readme_content": readme_content}
+        {"readme_content": readme_html}
     )
 
 
