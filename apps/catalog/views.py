@@ -1,7 +1,6 @@
 
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
-
 from django.conf import settings
 from pathlib import Path
 import markdown
@@ -25,13 +24,24 @@ def catalog(request):
         'products': page_obj.object_list,
     })
 
+from django.conf import settings
+from django.shortcuts import render
 
 def about(request):
-    readme_path = BASE_DIR / "README.md"
-    readme_content = ""
-    if readme_path.exists():
-        readme_content = readme_path.read_text(encoding="utf-8")
-    return render(request, "about.html", {"readme_content": readme_content})
+    readme_content = "README.md not found."
+
+    try:
+        readme_path = settings.BASE_DIR / "README.md"
+        if readme_path.exists():
+            readme_content = readme_path.read_text(encoding="utf-8")
+    except Exception as e:
+        readme_content = f"Error loading README.md: {e}"
+
+    return render(
+        request,
+        "about.html",
+        {"readme_content": readme_content}
+    )
 
 
 def product_detail(request, slug):
