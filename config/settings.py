@@ -1,3 +1,4 @@
+
 from dotenv import load_dotenv
 import os
 from pathlib import Path
@@ -69,18 +70,19 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+# Local SQLite
+LOCAL_SQLITE = f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
 
+# DATABASE_URL for (Render)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": dj_database_url.config(
+        default=LOCAL_SQLITE,
+        conn_max_age=600,
+        engine="django.db.backends.sqlite3",  #  ENGINE for SQLite
+    )
 }
 
-
 # Password validation
-# https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -135,8 +137,3 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL')
-    )
-}
