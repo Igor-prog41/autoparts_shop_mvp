@@ -30,7 +30,6 @@ products/
 
 # Environment / Secrets
 .env
-.env.*
 .venv/
 
 # Node / Frontend (если есть)
