@@ -6,9 +6,15 @@
 
 {% block content %}
 <h1 class="mb-4">Auto Parts Catalog</h1>
-<div class="row">
 
-    {% for product in products %}
+<!-- checking for the presence of a search result -->
+{% if request.GET.q and not page_obj  %}
+<h2 class="mb-4">There are no products matching your search: {{ request.GET.q }} </h2>
+{% endif %}
+
+<!-- display of products -->
+<div class="row">
+    {% for product in page_obj %}
 
         <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
             <div class="card h-100">
@@ -50,8 +56,9 @@
         <!-- Previous -->
         {% if page_obj.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
-                    &laquo;
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}
+                    &q={{ request.GET.q }}">
+                        &laquo;
                 </a>
             </li>
         {% else %}
@@ -68,7 +75,7 @@
                 </li>
             {% else %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    <a class="page-link" href="?page={{ num }}&q={{ request.GET.q }}">{{ num }}</a>
                 </li>
             {% endif %}
         {% endfor %}
@@ -76,7 +83,7 @@
         <!-- Next -->
         {% if page_obj.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}">
                     &raquo;
                 </a>
             </li>

@@ -14,10 +14,16 @@ from .models import Product
 
 # catalog with paginator
 def catalog(request):
-    products = Product.objects.all().order_by('id')
 
-    paginator = Paginator(products, 12)  # 12 products per page
     page_number = request.GET.get('page')
+    question = request.GET.get('q')
+    products = Product.objects.all()
+
+    if question:
+        products = products.filter(title__icontains=question)
+
+    products = products.order_by("id")
+    paginator = Paginator(products, 12)  # 12 products per page
     page_obj = paginator.get_page(page_number)
 
     return render(request, 'catalog/catalog.html', {
