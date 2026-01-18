@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.conf import settings
 from pathlib import Path
-from urllib.parse import urlencode
+#from urllib.parse import urlencode
 import markdown
 import os
 
@@ -48,6 +48,7 @@ def catalog(request):
         'query_string': query_string,
         'current_sort': sort,
         'current_q': question,
+        "show_sort": True,
     }
 
     return render(request, 'catalog/catalog.html', context)
@@ -76,7 +77,8 @@ def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
 
     return render(request, 'catalog/product_detail.html', {
-        'product': product
+        'product': product,
+        'show_sort': False,
     })
 
 

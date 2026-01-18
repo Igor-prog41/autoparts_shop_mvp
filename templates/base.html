@@ -81,58 +81,60 @@
                 </ul>
 
                             <!-- Right block: dynamic element -->
-                <div class="dropdown">
-                    <button class="btn btn-outline-light dropdown-toggle"
-                            type="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">Sort by
-                    </button>
+                {% if show_sort %}
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">Sort by
+                        </button>
 
-                    <form method="get">
-                        <ul class="dropdown-menu dropdown-menu-end px-3">
-                            <li class="form-check">
-                                <input class="form-check-input"
-                                   id="sort_default"
-                                   type="radio"
-                                   name="sort"
-                                   value="default"
-                                   onchange="this.form.submit()"
-                                   {% if not current_sort or current_sort == "default" %}checked{% endif %}>
+                        <form method="get">
+                            <ul class="dropdown-menu dropdown-menu-end px-3">
+                                <li class="form-check">
+                                    <input class="form-check-input"
+                                       id="sort_default"
+                                       type="radio"
+                                       name="sort"
+                                       value="default"
+                                       onchange="this.form.submit()"
+                                       {% if not current_sort or current_sort == "default" %}checked{% endif %}>
 
-                                <label class="form-check-label" for="sort_default">Default</label>
-                            </li>
+                                    <label class="form-check-label" for="sort_default">Default</label>
+                                </li>
 
-                             <li class="form-check">
-                                 <input class="form-check-input"
-                                    id="sort_price_asc"
-                                    type="radio"
-                                    name="sort"
-                                    value="price_asc"
-                                    onchange="this.form.submit()"
-                                    {% if current_sort == "price_asc" %}checked{% endif %} >
-                                 <label class="form-check-label" for="sort_price_asc">Price ↑</label>
-                             </li>
+                                 <li class="form-check">
+                                     <input class="form-check-input"
+                                        id="sort_price_asc"
+                                        type="radio"
+                                        name="sort"
+                                        value="price_asc"
+                                        onchange="this.form.submit()"
+                                        {% if current_sort == "price_asc" %}checked{% endif %} >
+                                     <label class="form-check-label" for="sort_price_asc">Price ↑</label>
+                                 </li>
 
-                             <li class="form-check">
-                                 <input class="form-check-input"
-                                    id="sort_price_desc"
-                                    type="radio"
-                                    name="sort"
-                                    value="price_desc"
-                                    onchange="this.form.submit()"
-                                    {% if current_sort == "price_desc" %}checked{% endif %}>
-                                 <label class="form-check-label" for="sort_price_desc">Price ↓</label>
-                             </li>
-                        </ul>
+                                 <li class="form-check">
+                                     <input class="form-check-input"
+                                        id="sort_price_desc"
+                                        type="radio"
+                                        name="sort"
+                                        value="price_desc"
+                                        onchange="this.form.submit()"
+                                        {% if current_sort == "price_desc" %}checked{% endif %}>
+                                     <label class="form-check-label" for="sort_price_desc">Price ↓</label>
+                                 </li>
+                            </ul>
 
-                        <!-- Hidden fields for search and tags -->
-                        {% for key, value in request.GET.items %}
-                            {% if key != 'sort' %}
-                                <input type="hidden" name="{{ key }}" value="{{ value }}">
-                            {% endif %}
-                        {% endfor %}
+                            <!-- Hidden fields for search and tags -->
+                            {% for key, value in request.GET.items %}
+                                {% if key != 'sort' %}
+                                    <input type="hidden" name="{{ key }}" value="{{ value }}">
+                                {% endif %}
+                            {% endfor %}
 
-                    </form>
-                </div>
+                        </form>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </nav>
