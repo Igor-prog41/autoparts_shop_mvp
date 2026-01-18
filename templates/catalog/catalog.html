@@ -14,36 +14,86 @@
 
 <!-- display of products -->
 <div class="row">
-    {% for product in page_obj %}
 
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-            <div class="card h-100">
-                <div class="card-body bg-light d-flex flex-column">
-                    <img src="{{ product.image_or_placeholder }}"
-                         class="img-fluid rounded mb-3"
-                         alt="{{ product.title }}">
-                    <h5 class="card-title">{{ product.title }}</h5>
-                    <p class="card-text text-muted">
-                        {{ product.short_description }}
-                    </p>
-                    <!-- Availability -->
-                    <span class="badge {{ product.stock_status.css }} mb-2 d-inline-block text-wrap">
-                        {{ product.stock_status.text }}
-                    </span>
-                    <!-- Price -->
-                    <div class="mt-auto">
-                        <strong>{{ product.price }} $</strong>
-                    </div>
-                                <!-- Entire card clickable -->
-                    <a href="{% url 'product_detail' product.slug %}?next={{ request.get_full_path|urlencode }}"
-                       class="stretched-link"
-                       aria-label="View {{ product.title }}">
+    <!-- Sidebar for large screens -->
+    <aside class="col-lg-2 col-md-4 d-none d-lg-block">
+        <div class="p-3 bg-light rounded shadow-sm">
+            <h4 class="mb-3">Tags</h4>
+            <div class="d-grid gap-2">
+                {% for tag in tags %}
+                    <a href="{% if tag.name == selected_tag %}?{% else %}?tag={{ tag.name }}{% endif %}"
+                       class="btn btn-sm {% if tag.name == selected_tag %}btn-primary
+                           {% else %}btn-outline-primary{% endif %}">
+                       {{ tag.name }}
                     </a>
+                {% endfor %}
+
+            </div>
+        </div>
+    </aside>
+
+    <!-- Collapsible sidebar toggle for small/medium screens -->
+    <div class="d-lg-none mb-3">
+        <button class="btn btn-primary"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#sidebarCollapse"
+                aria-expanded="false"
+                aria-controls="sidebarCollapse">
+            Tags
+        </button>
+
+        <div class="collapse mt-2" id="sidebarCollapse">
+            <div class="p-3 bg-light rounded shadow-sm">
+                <h5 class="mb-3">Tags</h5>
+                <div class="d-grid gap-2">
+                    {% for tag in tags %}
+                        <a href="{% if tag.name == selected_tag %}?{% else %}?tag={{ tag.name }}{% endif %}"
+                           class="btn btn-sm {% if tag.name == selected_tag %}btn-primary
+                               {% else %}btn-outline-primary{% endif %}">
+                           {{ tag.name }}
+                        </a>
+                    {% endfor %}
                 </div>
             </div>
         </div>
+    </div>
 
-    {% endfor %}
+    <!-- Products -->
+    <section class="col-lg-10 col-md-8">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            {% for product in page_obj %}
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body bg-light d-flex flex-column">
+                            <img src="{{ product.image_or_placeholder }}"
+                                 class="img-fluid rounded mb-3"
+                                 alt="{{ product.title }}">
+                            <h5 class="card-title">{{ product.title }}</h5>
+                            <p class="card-text text-muted">
+                                {{ product.short_description }}
+                            </p>
+                            <!-- Availability -->
+                            <span class="badge {{ product.stock_status.css }} mb-2 d-inline-block text-wrap">
+                                {{ product.stock_status.text }}
+                            </span>
+                            <!-- Price -->
+                            <div class="mt-auto">
+                                <strong>{{ product.price }} $</strong>
+                            </div>
+                                        <!-- Entire card clickable -->
+                            <a href="{% url 'product_detail' product.slug %}?next={{ request.get_full_path|urlencode }}"
+                               class="stretched-link"
+                               aria-label="View {{ product.title }}">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
+        </div>
+    </section>
 </div>
 
 

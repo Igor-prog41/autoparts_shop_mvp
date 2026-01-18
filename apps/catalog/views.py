@@ -3,12 +3,11 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.conf import settings
 from pathlib import Path
-#from urllib.parse import urlencode
 import markdown
 import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-from .models import Product
+from .models import Product, Tag, ProductTag
 
 
 # Create your views here.
@@ -18,6 +17,18 @@ def catalog(request):
 
     # --- Get all product ---
     products = Product.objects.all()
+
+    # --- Get all Tag ---
+    tags = Tag.objects.all()
+    #for tag in tags:
+     #   print(tag.id, tag.name)
+
+    # --- Tag filtering ---
+    selected_tag = request.GET.get('tag')
+    if selected_tag:
+        products = products.filter(
+            producttag__tag__name=selected_tag
+        ).distinct()
 
     # --- Search filtering ---
     question = request.GET.get('q', '').strip()
@@ -48,7 +59,9 @@ def catalog(request):
         'query_string': query_string,
         'current_sort': sort,
         'current_q': question,
-        "show_sort": True,
+        'show_sort': True,
+        'tags': tags,
+        'selected_tag': selected_tag,
     }
 
     return render(request, 'catalog/catalog.html', context)
