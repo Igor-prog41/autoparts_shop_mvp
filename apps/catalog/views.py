@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from django.conf import settings
 from pathlib import Path
+from urllib.parse import urlencode
 import markdown
 import os
 
@@ -15,21 +16,41 @@ from .models import Product
 # catalog with paginator
 def catalog(request):
 
-    page_number = request.GET.get('page')
-    question = request.GET.get('q')
+    # --- Get all product ---
     products = Product.objects.all()
 
+    # --- Search filtering ---
+    question = request.GET.get('q', '').strip()
     if question:
         products = products.filter(title__icontains=question)
 
-    products = products.order_by("id")
-    paginator = Paginator(products, 12)  # 12 products per page
+    # --- Sorting ---
+    sort = request.GET.get('sort')
+    if sort == 'price_asc':
+        products = products.order_by('price')
+    elif sort == 'price_desc':
+        products = products.order_by('-price')
+    else:
+        products = products.order_by('id')
+
+    # --- Pagination ---
+    paginator = Paginator(products, 12)  # 12 product per page
+    page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'catalog/catalog.html', {
+    # --- QueryDict for passing GET parameters to the template ---
+    querydict = request.GET.copy()
+    querydict.pop('page', None)
+    query_string = querydict.urlencode()
+
+    context = {
         'page_obj': page_obj,
-        'products': page_obj.object_list,
-    })
+        'query_string': query_string,
+        'current_sort': sort,
+        'current_q': question,
+    }
+
+    return render(request, 'catalog/catalog.html', context)
 
 
 def about(request):

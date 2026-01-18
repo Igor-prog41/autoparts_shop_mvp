@@ -10,7 +10,7 @@
     <ol class="breadcrumb">
 
         <li class="breadcrumb-item">
-            <a href="{% url 'catalog' %}">Catalog</a>
+            <a href="{{ request.GET.next|default:'/' }}">Catalog</a>
         </li>
 
         <li class="breadcrumb-item active" aria-current="page">

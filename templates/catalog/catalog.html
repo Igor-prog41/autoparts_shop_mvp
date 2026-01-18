@@ -35,7 +35,7 @@
                         <strong>{{ product.price }} $</strong>
                     </div>
                                 <!-- Entire card clickable -->
-                    <a href="{% url 'product_detail' product.slug %}"
+                    <a href="{% url 'product_detail' product.slug %}?next={{ request.get_full_path|urlencode }}"
                        class="stretched-link"
                        aria-label="View {{ product.title }}">
                     </a>
@@ -56,8 +56,7 @@
         <!-- Previous -->
         {% if page_obj.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}
-                    &q={{ request.GET.q }}">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if query_string %}&{{ query_string }}{% endif %}">
                         &laquo;
                 </a>
             </li>
@@ -75,7 +74,7 @@
                 </li>
             {% else %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ num }}&q={{ request.GET.q }}">{{ num }}</a>
+                    <a class="page-link" href="?page={{ num }}{% if query_string %}&{{ query_string }}{% endif %}">{{ num }}</a>
                 </li>
             {% endif %}
         {% endfor %}
@@ -83,7 +82,7 @@
         <!-- Next -->
         {% if page_obj.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query_string %}&{{ query_string }}{% endif %}">
                     &raquo;
                 </a>
             </li>
