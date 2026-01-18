@@ -96,7 +96,7 @@
                                    name="sort"
                                    value="default"
                                    onchange="this.form.submit()"
-                                   {% if current_sort == "default" %}checked{% endif %}>
+                                   {% if not current_sort or current_sort == "default" %}checked{% endif %}>
 
                                 <label class="form-check-label" for="sort_default">Default</label>
                             </li>
