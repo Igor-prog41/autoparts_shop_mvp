@@ -77,13 +77,32 @@ WSGI_APPLICATION = 'config.wsgi.application'
 LOCAL_SQLITE = f"sqlite:///{BASE_DIR / 'db.sqlite3'}"
 
 # DATABASE_URL for (Render)
-DATABASES = {
-    "default": dj_database_url.config(
-        default=LOCAL_SQLITE,
-        conn_max_age=600,
-        engine="django.db.backends.sqlite3",  #  ENGINE for SQLite
-    )
-}
+# DATABASES = {
+#     "default": dj_database_url.config(
+#         default=LOCAL_SQLITE,
+#         conn_max_age=600,
+#         engine="django.db.backends.sqlite3",  #  ENGINE for SQLite
+#     )
+# }
+
+# DATABASE_URL for (Render)
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.config(
+            conn_max_age=600,
+            ssl_require=not DEBUG,
+        )
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+
 
 # Password validation
 

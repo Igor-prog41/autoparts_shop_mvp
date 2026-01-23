@@ -17,7 +17,7 @@ class VisitLoggingMiddleware:
         if request.method == "GET":
             PageVisit.objects.create(
                 ip_address=self.get_client_ip(request),
-                path=request.path,
+                path=request.get_full_path(),
                 user_agent=request.META.get("HTTP_USER_AGENT", ""),
             )
 

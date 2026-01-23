@@ -1,138 +1,130 @@
 # Autoparts Shop MVP
 
-Django-based project demonstrating backend development practices with a focus on **working with databases in Python and Django**.
+A simple Django-based web application that demonstrates a product catalog with search, sorting, tag filtering, pagination and basic analytics.  
+The project was built as a learning and portfolio project with focus on backend logic, data flow and production setup.
 
-The project demonstrates:
-- product catalog management
-- relational database modeling (ForeignKey, ManyToMany)
-- generation of initial database data via scripts
-- a production-oriented workflow (GitHub → Render)
+Live demo: https://autoparts-shop-mvp.onrender.com/
 
 ---
 
-## 🛠 Technologies
+## Features
 
-- Python 3.12
-- Django 4+
-- PostgreSQL (production) / SQLite (local)
-- Bootstrap (frontend)
-- Cloudinary (image storage)
+- Product catalog with pagination
+- Text search by product title
+- Sorting (default, price ascending, price descending)
+- Tag-based filtering (Many-to-Many relationship)
+- Responsive layout using Bootstrap
+- Product detail page
+- Django admin panel
+- Page visit logging via custom middleware
+- PostgreSQL in production, SQLite for local development
+- Environment-based configuration (.env)
 
 ---
 
-## 📁 Project Structure
+## Tech Stack
 
+- Python 3
+- Django 4.2
+- PostgreSQL (production)
+- SQLite (local development)
+- Bootstrap 5
+- Whitenoise (static files)
+- Render (deployment)
+
+---
+
+## Project Structure
 ```
 autoparts_shop_mvp/
 ├── apps/
 │   └── catalog/          # Django app: product catalog
+│
 ├── fixtures/
 │   └── initial_data.json # initial database data (fixtures)
 ├── manage.py
 ├── requirements.txt
 └── README.md
 ```
+---
+
+## Search, Sorting and Filtering
+
+- Search is implemented using `icontains` on product titles
+- Sorting is controlled via GET parameters
+- Tag filtering uses an explicit Many-to-Many table
+- All GET parameters are preserved across pagination and navigation
 
 ---
 
-## 🚀 Getting Started (Local)
+## Visit Logging
 
-### 1️⃣ Clone the repository
+A custom Django middleware logs page visits:
+- URL path
+- Client IP address
+- Timestamp
 
-```bash
-git clone <repo_url>
-cd autoparts_shop_mvp
-```
-
-### 2️⃣ Create a virtual environment and install dependencies
-
-```bash
-python -m venv .venv
-.venv\Scripts\activate
-pip install -r requirements.txt
-```
+Static files and admin pages are excluded.  
+All records can be viewed through Django admin.
 
 ---
 
-## 🗄 Database Setup
+## Environment Variables
 
-### 3️⃣ Apply migrations
+The project uses environment variables for sensitive configuration:
 
-```bash
-python manage.py migrate
-```
+SECRET_KEY
+DATABASE_URL
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
+CLOUDINARY_CLOUD_NAME
 
-### 4️⃣ Load initial data (fixtures)
-
-```bash
-python manage.py loaddata fixtures/initial_data.json
-```
-
-If the database already contains data:
-
-```bash
-python manage.py flush
-python manage.py loaddata fixtures/initial_data.json
-```
+A `.env` file is used locally and excluded from version control.
 
 ---
 
-## 📦 Initial Data Generation
+## Local Setup
 
-The database is populated using a **custom script** that generates records based on an existing **image catalog stored on Cloudinary**.
+1. Clone the repository
+2. Create and activate virtual environment
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+4. Create .env file
+5. Run migrations:
+     ```bash
+    python manage.py migrate
+6. Create admin user:
+    ```bash
+   python manage.py createsuperuser
+7. Run development server:
+    ```bash
+   python manage.py runserver
+   
+---
 
-This approach allows:
-- rebuilding the database from external assets
-- keeping the repository free of binary files
-- reproducing the same dataset across environments
+## Admin Panel
 
-The generated data is exported to JSON using Django fixtures.
+Django admin is available at:
+
+/admin/
+It is used to:
+
+View logged page visits
 
 ---
 
-## 🌍 Deployment (Render)
+## Notes
 
-Typical deployment workflow:
+This project is intentionally kept simple and focused on backend fundamentals:
+* clear data relationships
+* predictable request handling
+* production-aware configuration
+* It is not intended to be a full e-commerce solution.
 
-```bash
-python manage.py migrate
-python manage.py loaddata fixtures/initial_data.json
-```
+--- 
 
-On Render, the database is created empty, so fixtures can be loaded immediately after migrations.
-
----
-
-## 🔐 What Is Not Stored in the Repository
-
-- users and passwords
-- superusers
-- API keys or secrets
-- real production data
-
-Fixtures are used **only for initial database setup and demo purposes**.
-
----
-
-## 🎯 Project Goal
-
-The primary goal of this project is to **demonstrate practical work with Django, Python, and relational databases**, including:
-
-- database schema design
-- data generation and serialization
-- reliable database initialization across environments
-
----
-
-## 📌 Notes
-
-- Fixtures must be encoded as **UTF-8 (no BOM)**
-- `loaddata` inserts data but does not update existing records
-- Use `flush` before reloading fixtures into a non-empty database
-
----
-
-## 📬 Contact
+##  Contact
 
 Author: Igor Iaroshevych  
 GitHub: https://github.com/Igor-prog41
