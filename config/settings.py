@@ -96,6 +96,8 @@ if DATABASE_URL:
         )
     }
 else:
+    if os.getenv("ENV") == "production":
+        raise RuntimeError("DATABASE_URL is required in production")
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
