@@ -18,7 +18,7 @@ if not SECRET_KEY:
     raise RuntimeError("DJANGO_SECRET_KEY is not set")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -34,9 +34,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'apps.catalog',
+    'apps.users',
+    'apps.cart',
     'cloudinary',
     'cloudinary_storage',
+    'rest_framework',
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

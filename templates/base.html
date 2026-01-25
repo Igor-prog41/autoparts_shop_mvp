@@ -45,15 +45,40 @@
                        </form>
                   </div>
 
-                  <!-- Right icons -->
-                  <div class="col-12 col-md-auto d-flex justify-content-md-end mt-2 mt-md-0">
-                      <img src="{% static 'cart-placeholder.png' %}"
-                           alt="Cart and auth placeholder"
-                           height="24">
-                  </div>
-              </div>
-          </div>
-      </div>
+                   <!-- Right icons -->
+                   <div class="col-12 col-md-auto d-flex justify-content-md-end mt-2 mt-md-0 align-items-center gap-3">
+
+                       {% if request.user.is_authenticated %}
+                           <!-- Account -->
+                           <a href="{% url 'profile' %}" class="btn btn-outline-secondary btn-sm">
+                           {{ request.user.username }}
+                           </a>
+
+                           <!-- Logout -->
+                           <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">
+                                Logout
+                           </a>
+                       {% else %}
+                           <!-- Login -->
+                           <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm">
+                                Login
+                           </a>
+                       {% endif %}
+
+                        <!-- Cart -->
+                       <a href="{% url 'cart' %}" class="position-relative text-decoration-none">
+                           <img src="{% static 'cart-placeholder-v2.png' %}" alt="Cart" height="44">
+
+                           <!-- Badge -->
+                           <span class="position-absolute top-50 start-100 translate-middle badge rounded-pill bg-danger">
+                               {{ cart_items_count|default:0 }}
+                           </span>
+                        </a>
+                   </div>
+
+               </div>
+           </div>
+       </div>
     </div>
 
     <!-- Navbar -->
