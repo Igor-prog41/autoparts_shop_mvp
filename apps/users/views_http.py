@@ -1,8 +1,7 @@
-from django.contrib.auth.decorators import login_required
+
 from django.shortcuts import render, redirect
 from .services import create_user
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
 
 
 def register_view_http(request):
@@ -46,9 +45,8 @@ def logout_view_http(request):
 
 def profile_view_http(request):
     user = request.user
-
     context = {
         "user": user
-    }
-
+        }
     return render(request, "users/profile.html", context)
+
