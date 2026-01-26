@@ -1,0 +1,19 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+
+<div class="container py-5" style="max-width: 520px;">
+    <h2 class="mb-4 text-center">Profile</h2>
+
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+
+    <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+
+</div>
+
+{% endblock %}
