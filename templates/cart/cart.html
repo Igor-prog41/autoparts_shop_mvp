@@ -7,6 +7,14 @@
 
 {% block content %}
 
-<H1> Cart </H1>
+<div class="container py-5" style="max-width: 520px;">
+    <h2 class="mb-4 text-center">Cart</h2>
+
+    <p><strong>cart:</strong> {{ cart }}</p>
+    <p><strong>items:</strong> {{ items }}</p>
+    <p><strong>total_price:</strong> {{ total_price }}</p>
+
+
+</div>
 
 {% endblock %}
