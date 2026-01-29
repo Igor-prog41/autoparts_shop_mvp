@@ -43,6 +43,19 @@
             ${{ product.price }}
         </p>
 
+        <!-- Add to cart button -->
+        <form method="post"
+                 action="{% url 'cart_add' %}"
+                 class="position-relative"
+                 style="z-index: 2;"
+                 onclick="event.stopPropagation()">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+            <button type="submit" class="btn btn-outline-primary btn-sm fw-semibold">
+                Add to cart
+            </button>
+        </form>
+
     </div>
 
 </div>

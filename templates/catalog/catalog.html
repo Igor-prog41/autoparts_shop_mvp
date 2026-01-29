@@ -82,11 +82,23 @@
                             <div class="mt-auto">
                                 <strong>{{ product.price }} $</strong>
                             </div>
-                                        <!-- Entire card clickable -->
+                            <!-- Entire card clickable -->
                             <a href="{% url 'product_detail' product.slug %}?next={{ request.get_full_path|urlencode }}"
                                class="stretched-link"
                                aria-label="View {{ product.title }}">
                             </a>
+                            <!-- Add to cart button -->
+                            <form method="post"
+                                     action="{% url 'cart_add' %}"
+                                     class="position-relative"
+                                     style="z-index: 2;"
+                                     onclick="event.stopPropagation()">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ product.id }}">
+                                <button type="submit" class="btn btn-outline-primary btn-sm w-100 fw-semibold">
+                                    Add to cart
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
