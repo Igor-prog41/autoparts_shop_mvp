@@ -10,7 +10,10 @@ def cart_view_http(request):
     cart = get_cart(request)
     items = cart.items.select_related("product") if cart else []
 
-    total_price = sum(item.quantity * item.product.price for item in items)
+    total_price = 0
+    for item in items:
+        item.line_total = item.quantity * item.product.price
+        total_price += item.line_total
 
     return render(request, "cart/cart.html", {
         "cart": cart,

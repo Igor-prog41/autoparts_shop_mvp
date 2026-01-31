@@ -1,20 +1,121 @@
-
-
 {% extends "base.html" %}
-{% load static %}
 
 {% block title %}Cart{% endblock %}
 
 {% block content %}
+<div class="container my-4">
 
-<div class="container py-5" style="max-width: 520px;">
-    <h2 class="mb-4 text-center">Cart</h2>
+    <h2 class="mb-4">Your Cart</h2>
 
-    <p><strong>cart:</strong> {{ cart }}</p>
-    <p><strong>items:</strong> {{ items }}</p>
-    <p><strong>total price:</strong> {{ total_price }}</p>
+    {% if items %}
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th style="width: 90px;">Image</th>
+                        <th>Product</th>
+                        <th class="text-center">Quantity</th>
+                        <th class="text-end">Price</th>
+                        <th class="text-end">Total</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
 
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        <!-- Image -->
+                        <td>
+                            {% if item.product.image_url %}
+                                <img src="{{ item.product.image_url }}"
+                                     alt="{{ item.product.title }}"
+                                     class="img-fluid rounded"
+                                     style="max-height: 60px;">
+                            {% else %}
+                                <span class="text-muted small">No image</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Product -->
+                        <td>
+                            <div class="fw-semibold">
+                                {{ item.product.title }}
+                            </div>
+                        </td>
+
+                        <!-- Quantity controls -->
+                        <td class="text-center">
+                            <div class="d-inline-flex align-items-center gap-2">
+
+                                <!-- Decrease -->
+                                <form method="post" action="{% url 'cart_decrease' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                    <button class="btn btn-sm btn-outline-secondary">−</button>
+                                </form>
+
+                                <span class="fw-semibold">
+                                    {{ item.quantity }}
+                                </span>
+
+                                <!-- Increase -->
+                                <form method="post" action="{% url 'cart_add' %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                    <button class="btn btn-sm btn-outline-secondary">+</button>
+                                </form>
+
+                            </div>
+                        </td>
+
+                        <!-- Price -->
+                        <td class="text-end">
+                            ${{ item.product.price }}
+                        </td>
+
+                        <!-- Line total -->
+                        <td class="text-end fw-semibold">
+                            ${{ item.line_total }}
+                        </td>
+
+                        <!-- Actions -->
+                        <td class="text-end">
+                            <form method="post" action="{% url 'cart_remove' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{ item.product.id }}">
+                                <button class="btn btn-sm btn-outline-danger">
+                                    Remove
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Summary -->
+        <div class="d-flex justify-content-end mt-4">
+            <div class="card p-3 shadow-sm" style="min-width: 280px;">
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Subtotal</span>
+                    <strong>${{ total_price }}</strong>
+                </div>
+
+                <a href="#" class="btn btn-primary w-100 mt-2">
+                    Proceed to Checkout
+                </a>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="text-center py-5">
+            <h5 class="text-muted mb-3">Your cart is empty</h5>
+            <a href="{% url 'catalog' %}" class="btn btn-outline-primary">
+                Continue shopping
+            </a>
+        </div>
+    {% endif %}
 
 </div>
-
 {% endblock %}
