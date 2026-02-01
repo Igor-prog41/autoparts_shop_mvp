@@ -38,3 +38,22 @@ def add_product_to_cart(cart, product):
     if not created:
         item.quantity += 1
         item.save()
+
+
+# Reduce the number of items in the cart
+def decrease_product_in_cart(cart, product):
+    item = CartItem.objects.filter(cart=cart, product=product).first()
+    if not item:
+        return
+
+    if item.quantity > 1:
+        item.quantity -= 1
+        item.save(update_fields=["quantity"])
+    else:
+        item.delete()
+
+
+# removes products from the cart
+def remove_product_from_cart(cart, product):
+    CartItem.objects.filter(cart=cart, product=product).delete()
+

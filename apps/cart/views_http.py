@@ -1,9 +1,8 @@
 from django.shortcuts import render,redirect, get_object_or_404
-from .services import get_cart, get_or_create_cart, add_product_to_cart
+from .services import *
+
 
 from apps.catalog.models import Product
-
-
 
 
 def cart_view_http(request):
@@ -38,9 +37,33 @@ def add_to_cart_view_http(request):
     return redirect(request.META.get("HTTP_REFERER", "catalog"))
 
 
-def decrease_cart_view_http():
-    return None
+def decrease_cart_view_http(request):
+    if request.method != "POST":
+        return redirect("catalog")
+
+    product_id = request.POST.get("product_id")
+    if not product_id:
+        return redirect(request.META.get("HTTP_REFERER", "catalog"))
+
+    product = get_object_or_404(Product, id=product_id)
+
+    cart = get_or_create_cart(request)
+    decrease_product_in_cart(cart, product)
+
+    return redirect(request.META.get("HTTP_REFERER", "catalog"))
 
 
-def remove_from_cart_view_http():
-    return None
+def remove_product_from_cart_view_http(request):
+    if request.method != "POST":
+        return redirect("catalog")
+
+    product_id = request.POST.get("product_id")
+    if not product_id:
+        return redirect(request.META.get("HTTP_REFERER", "catalog"))
+
+    product = get_object_or_404(Product, id=product_id)
+
+    cart = get_or_create_cart(request)
+    remove_product_from_cart(cart, product)
+
+    return redirect(request.META.get("HTTP_REFERER", "catalog"))
