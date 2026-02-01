@@ -3,8 +3,13 @@ from django.shortcuts import render, redirect
 from .services import create_user
 from django.contrib.auth import authenticate, login, logout
 
+from ..cart.models import Cart
+from ..cart.services import merge_guest_cart_into_user_cart
+
 
 def register_view_http(request):
+    # receiving session_cart for combining baskets
+    session_cart = Cart.objects.filter(session_key=request.session.session_key).first()
     if request.method == "POST":
         try:
             user = create_user(
@@ -13,6 +18,9 @@ def register_view_http(request):
                 request.POST["password"]
             )
             login(request, user)
+            # combining baskets
+            if session_cart:
+                merge_guest_cart_into_user_cart(request, session_cart, user)
             return redirect("catalog")
 
         except Exception as e:
@@ -22,6 +30,9 @@ def register_view_http(request):
 
 
 def login_view_http(request):
+    # receiving session_cart for combining baskets
+    session_cart = Cart.objects.filter(session_key=request.session.session_key).first()
+
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -30,6 +41,9 @@ def login_view_http(request):
 
         if user is not None:
             login(request, user)
+            # combining baskets
+            if session_cart:
+                merge_guest_cart_into_user_cart(request, session_cart, user)
             return redirect("catalog")
         else:
             return render(request, "users/login.html",{

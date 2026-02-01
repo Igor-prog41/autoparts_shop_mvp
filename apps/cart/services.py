@@ -57,3 +57,12 @@ def decrease_product_in_cart(cart, product):
 def remove_product_from_cart(cart, product):
     CartItem.objects.filter(cart=cart, product=product).delete()
 
+
+def merge_guest_cart_into_user_cart(request, session_cart, user):
+
+    user_cart, _ = Cart.objects.get_or_create(user=user)
+    items = session_cart.items.select_related("product")
+    for item in items:
+        add_product_to_cart(user_cart, item.product)
+    session_cart.delete()
+
