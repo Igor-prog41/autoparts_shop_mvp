@@ -11,6 +11,8 @@ urlpatterns = [
     path("profile/", views_http.profile_view_http, name="profile"),
 
     path("api/register/", RegisterView.as_view(), name="api_register"),
-    path("api/login/", TokenObtainPairView.as_view(), name="api_login"),
-    path("api/refresh/", TokenRefreshView.as_view(), name="api_token_refresh"),
+    path("api/login/", TokenObtainPairView.as_view(), name="api_login"),  # correct
+    path("api/refresh/", TokenRefreshView.as_view(), name="api_token_refresh"),  #correct
+    path("api/logout/", views_http.logout_view_http, name="api_logout"),
+    path("api/profile/", views_http.profile_view_http, name="api_profile"),
 ]

@@ -32,3 +32,10 @@ class RegisterView(APIView):
             "refresh": str(refresh),
             "access": str(refresh.access_token),
         })
+
+
+# class RegisterAPIView(CreateAPIView):
+#     serializer_class = RegisterSerializer
+#
+#     def perform_create(self, serializer):
+#         serializer.save()

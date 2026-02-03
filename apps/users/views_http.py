@@ -1,7 +1,11 @@
 
 from django.shortcuts import render, redirect
-from .services import create_user
 from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import ValidationError
+
+from .form import validate_register_data
+from .services import create_user
+
 
 from ..cart.models import Cart
 from ..cart.services import merge_guest_cart_into_user_cart
@@ -12,6 +16,11 @@ def register_view_http(request):
     session_cart = Cart.objects.filter(session_key=request.session.session_key).first()
     if request.method == "POST":
         try:
+            validate_register_data(
+                request.POST["username"],
+                request.POST["password"]
+            )
+
             user = create_user(
                 request.POST["username"],
                 request.POST["email"],
@@ -23,8 +32,8 @@ def register_view_http(request):
                 merge_guest_cart_into_user_cart(request, session_cart, user)
             return redirect("catalog")
 
-        except Exception as e:
-            return render(request, "users/register.html", {"error": str(e)})
+        except ValidationError as e:
+            return render(request, "users/register.html", {"error": e.message})
 
     return render(request, "users/register.html")
 
