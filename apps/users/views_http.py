@@ -13,7 +13,12 @@ from ..cart.services import merge_guest_cart_into_user_cart
 
 def register_view_http(request):
     # receiving session_cart for combining baskets
-    session_cart = Cart.objects.filter(session_key=request.session.session_key).first()
+    session_key = request.session.session_key
+    if session_key:
+        session_cart = Cart.objects.filter(
+            session_key=session_key
+        ).first()
+
     if request.method == "POST":
         try:
             validate_register_data(
