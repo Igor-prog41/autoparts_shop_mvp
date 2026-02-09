@@ -2,7 +2,7 @@
 from .models import Cart, CartItem
 
 
-#user cart contents or session cart contents
+#user cart contents or session cart contents, but we don't create cart if it doesn't exist
 def get_cart(request):
     if request.user.is_authenticated:
         return Cart.objects.filter(user=request.user).first()
