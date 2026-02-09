@@ -1,7 +1,12 @@
-# Autoparts Shop MVP
+# Autoparts Shop MVP (Django Backend Portfolio Project)
 
-A simple Django-based web application that demonstrates a product catalog with search, sorting, tag filtering, pagination and basic analytics.  
-The project was built as a learning and portfolio project with focus on backend logic, data flow and production setup.
+A Django-based backend-focused MVP demonstrating production-oriented architecture,
+authentication flows, shopping cart logic, and REST API design.
+
+Built as a portfolio project with emphasis on:
+- clean backend architecture
+- separation of concerns
+- real-world data flow
 
 Live demo: https://autoparts-shop-mvp.onrender.com/
 
@@ -9,12 +14,14 @@ Live demo: https://autoparts-shop-mvp.onrender.com/
 
 ## Features
 
-- Product catalog with pagination
-- Text search by product title
-- Sorting (default, price ascending, price descending)
-- Tag-based filtering (Many-to-Many relationship)
-- Responsive layout using Bootstrap
-- Product detail page
+- Product catalog with pagination, search, sorting and tag filtering
+- Session-based cart for guest users
+- User cart with automatic cart merge on login/registration
+- Authentication system:
+  - Session authentication (HTML)
+  - JWT authentication (API)
+- REST API for authentication and cart operations
+- Service layer for business logic
 - Django admin panel
 - Page visit logging via custom middleware
 - PostgreSQL in production, SQLite for local development
@@ -31,6 +38,19 @@ Live demo: https://autoparts-shop-mvp.onrender.com/
 - Bootstrap 5
 - Whitenoise (static files)
 - Render (deployment)
+- Django REST Framework
+- SimpleJWT (JWT authentication)
+
+---
+
+## Architecture Overview
+
+The project follows a layered architecture:
+
+- HTTP views for server-rendered pages
+- API views for JSON-based access
+- Service layer for shared business logic
+- Django ORM as data layer
 
 ---
 
@@ -38,7 +58,9 @@ Live demo: https://autoparts-shop-mvp.onrender.com/
 ```
 autoparts_shop_mvp/
 ├── apps/
-│   └── catalog/          # Django app: product catalog
+│   ├── catalog/          # Django app: product catalog
+│   ├── users/     # Authentication (HTML + API)
+│   └──cart/      # Cart logic (guest + user)
 │
 ├── fixtures/
 │   └── initial_data.json # initial database data (fixtures)
@@ -48,12 +70,29 @@ autoparts_shop_mvp/
 ```
 ---
 
+## Authentication
+
+- HTML: session-based authentication
+- API: JWT-based authentication (access + refresh)
+- Guest carts are merged into user carts on login or registration
+
+---
+
+## API Endpoints (examples)
+
+POST /api/register/
+POST /api/login/
+GET  /api/cart/
+
+---
+
 ## Search, Sorting and Filtering
 
 - Search is implemented using `icontains` on product titles
 - Sorting is controlled via GET parameters
 - Tag filtering uses an explicit Many-to-Many table
 - All GET parameters are preserved across pagination and navigation
+- Implemented using Django ORM and query optimization patterns
 
 ---
 
@@ -66,6 +105,7 @@ A custom Django middleware logs page visits:
 
 Static files and admin pages are excluded.  
 All records can be viewed through Django admin.
+Demonstrates custom middleware and request lifecycle understanding.
 
 ---
 
@@ -114,6 +154,14 @@ View logged page visits
 
 ---
 
+## Roadmap
+
+- Order and payment flow (test mode)
+- Automated tests
+- Dockerization
+
+---
+
 ## Notes
 
 This project is intentionally kept simple and focused on backend fundamentals:
@@ -127,5 +175,6 @@ This project is intentionally kept simple and focused on backend fundamentals:
 ##  Contact
 
 Author: Igor Iaroshevych  
+Location: Canada (Alberta)
 GitHub: https://github.com/Igor-prog41
 

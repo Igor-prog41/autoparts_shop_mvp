@@ -10,8 +10,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 from .models import Product, Tag, ProductTag
 
 
-# Create your views here.
-
 # catalog with paginator
 def catalog(request):
 
