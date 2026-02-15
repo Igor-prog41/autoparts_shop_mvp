@@ -70,6 +70,23 @@ autoparts_shop_mvp/
 ```
 ---
 
+## Initial Data Generation
+
+Initial product data was generated using custom data seeding scripts
+based on a structured product image dataset.
+The data pipeline supports both local image storage and cloud-based media storage via Cloudinary.
+
+The scripts perform:
+- Parsing product image directories
+- Generating product metadata (price, description, stock availability)
+- Creating database-ready product records
+- Exporting generated data into JSON fixtures
+
+This approach allows fast bootstrapping of a fresh database and
+simplifies deployment to new environments.
+
+---
+
 ## Authentication
 
 - HTML: session-based authentication
@@ -125,22 +142,58 @@ A `.env` file is used locally and excluded from version control.
 
 ## Local Setup
 
-1. Clone the repository
-2. Create and activate virtual environment
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-4. Create .env file
-5. Run migrations:
-     ```bash
+1. Clone Repository
+    git clone https://github.com/Igor-prog41/autoparts_shop_mvp.git
+    cd autoparts_shop_mvp
+
+2. Create Virtual Environment
+    python -m venv venv
+    Activate environment:
+
+    Windows:
+    venv\Scripts\activate
+    
+    Linux / Mac:
+    source venv/bin/activate
+
+3. Install Dependencies
+    pip install -r requirements.txt
+
+4. Configure Environment Variables
+    Create .env file in project root and add:
+    
+    SECRET_KEY=your_secret_key
+    DATABASE_URL=your_database_url
+    
+    CLOUDINARY_CLOUD_NAME=your_cloud_name
+    CLOUDINARY_API_KEY=your_api_key
+    CLOUDINARY_API_SECRET=your_api_secret
+    
+    Product images are stored in Cloudinary and delivered via public CDN URLs.
+    
+    Cloudinary API credentials are required only for uploading media 
+    or running initial data seeding scripts.
+
+5. Apply Migrations
     python manage.py migrate
-6. Create admin user:
-    ```bash
-   python manage.py createsuperuser
-7. Run development server:
-    ```bash
-   python manage.py runserver
-   
+
+6. Load Initial Product Data
+    Populate database with initial catalog data:
+    python manage.py seed_products
+    
+    This command creates initial product records and links product images hosted in Cloudinary. 
+    If Cloudinary credentials are missing, the seeding process may fail.
+
+7. Run Development Server
+    python manage.py runserver
+    Open in browser:
+    http://127.0.0.1:8000/
+
+Notes:
+    If you only need to run the project with existing product image URLs,
+    Cloudinary API credentials are not required unless you plan to upload new media 
+    or regenerate initial data.
+
 ---
 
 ## Admin Panel
