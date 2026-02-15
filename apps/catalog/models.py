@@ -33,7 +33,7 @@ class Product(models.Model):
 
     @property
     def image_or_placeholder(self):
-        return self.image_url or static('images/part-placeholder.png')
+        return self.image_url or static('part-placeholder.png')
 
     def save(self, *args, **kwargs):
         if not self.slug:

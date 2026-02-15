@@ -38,6 +38,7 @@ def add_product_to_cart(cart, product):
     if not created:
         item.quantity += 1
         item.save()
+    return item
 
 
 # Reduce the number of items in the cart
