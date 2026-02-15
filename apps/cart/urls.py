@@ -4,12 +4,14 @@ from apps.cart import views_http
 from apps.cart import views_api
 
 
+app_name = "cart"
+
 urlpatterns = [
     path("cart/", views_http.cart_view_http, name="cart"),
 
-    path("card/add/", views_http.add_to_cart_view_http, name="cart_add"),
-    path("card/decrease/", views_http.decrease_cart_view_http, name="cart_decrease"),
-    path("card/remove/", views_http.remove_product_from_cart_view_http, name="cart_remove"),
+    path("cart/add/", views_http.add_to_cart_view_http, name="cart_add"),
+    path("cart/decrease/", views_http.decrease_cart_view_http, name="cart_decrease"),
+    path("cart/remove/", views_http.remove_product_from_cart_view_http, name="cart_remove"),
 
     path("api/cart/", views_api.CartRetrieveAPIView.as_view(), name="api_cart"),
     path("api/cart/add/", views_api.AddToCartAPIView.as_view(), name="api_cart_add"),

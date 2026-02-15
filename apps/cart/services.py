@@ -45,13 +45,15 @@ def add_product_to_cart(cart, product):
 def decrease_product_in_cart(cart, product):
     item = CartItem.objects.filter(cart=cart, product=product).first()
     if not item:
-        return
+        return None
 
     if item.quantity > 1:
         item.quantity -= 1
         item.save(update_fields=["quantity"])
+        return item
     else:
         item.delete()
+        return None
 
 
 # removes products from the cart

@@ -4,7 +4,7 @@ from apps.cart.models import CartItem, Cart
 
 
 class CartItemSerializer(serializers.ModelSerializer):
-    product_name = serializers.CharField(source="product.name")
+    product_name = serializers.CharField(source="product.title")
     price = serializers.DecimalField(source="product.price", max_digits=10, decimal_places=2)
     line_total = serializers.SerializerMethodField()
 
