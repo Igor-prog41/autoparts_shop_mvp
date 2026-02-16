@@ -87,6 +87,34 @@ simplifies deployment to new environments.
 
 ---
 
+## Testing & CI/CD
+
+### Automated Tests
+
+The project includes comprehensive automated tests covering:
+
+- **Models**: `Product`, `Tag`, `ProductTag`, `Cart`, `CartItem`
+- **Service Functions**: Adding/removing products in the cart
+- **API Endpoints** (Django REST Framework):
+  - `POST /api/cart/add/`
+  - `POST /api/cart/decrease/`
+  - `GET /api/cart/`
+
+These tests ensure that core functionality works as expected and prevent regressions during development.
+
+### Continuous Integration / Deployment (CI/CD)
+
+A CI/CD pipeline has been configured using **GitHub Actions** and **Render**:
+
+- **GitHub Actions** runs automated tests on every push to the repository.
+- **Deploy to Render** only occurs if all tests pass, preventing broken code from reaching production.
+- **Environment variables and secrets** (like `DJANGO_SECRET_KEY`) are securely managed in GitHub Secrets.
+
+This setup guarantees that the application is automatically tested and safely deployed, maintaining stability and reliability in production.
+
+
+---
+
 ## Authentication
 
 - HTML: session-based authentication
