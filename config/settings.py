@@ -18,7 +18,8 @@ if not SECRET_KEY:
     raise RuntimeError("DJANGO_SECRET_KEY is not set")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("RENDER") is None
+ENV = os.getenv("ENV", "development").lower()
+DEBUG = ENV != "production"
 
 ALLOWED_HOSTS = ["*"]
 
