@@ -1,261 +1,85 @@
-# Autoparts Shop MVP (Django Backend Portfolio Project)
+# Autoparts Shop MVP (Django Backend Project)
 
-A Django-based backend-focused MVP demonstrating production-oriented architecture,
-authentication flows, shopping cart logic, and REST API design.
+Backend-focused e-commerce MVP built with Django, designed to
+demonstrate real-world backend architecture, containerization, and
+production-ready practices.
 
-Built as a portfolio project with emphasis on:
-- clean backend architecture
-- separation of concerns
-- real-world data flow
+Live demo:\
+https://autoparts-shop-mvp.onrender.com/
 
-Live demo: https://autoparts-shop-mvp.onrender.com/
+------------------------------------------------------------------------
 
----
+##  Overview
 
-## Features
+This project simulates a simplified online store backend with:
 
-- Product catalog with pagination, search, sorting and tag filtering
-- Session-based cart for guest users
-- User cart with automatic cart merge on login/registration
-- Authentication system:
-  - Session authentication (HTML)
-  - JWT authentication (API)
-- REST API for authentication and cart operations
-- Service layer for business logic
-- Django admin panel
-- Page visit logging via custom middleware
-- PostgreSQL in production, SQLite for local development
-- Environment-based configuration (.env)
+-   product catalog
+-   cart system (guest + authenticated users)
+-   authentication (session + JWT)
+-   REST API
+-   production-like environment using Docker and PostgreSQL
 
----
+The focus is on **backend engineering practices**, not UI.
 
-## Tech Stack
+------------------------------------------------------------------------
 
-- Python 3
-- Django 4.2
-- PostgreSQL (production)
-- SQLite (local development)
-- Bootstrap 5
-- Whitenoise (static files)
-- Render (deployment)
-- Django REST Framework
-- SimpleJWT (JWT authentication)
+##  Tech Stack
 
----
+-   Python 3.12\
+-   Django 4.2\
+-   Django REST Framework\
+-   PostgreSQL (Docker / production)\
+-   Docker & Docker Compose\
+-   Gunicorn\
+-   Whitenoise\
+-   Render (deployment)\
+-   GitHub Actions (CI)
 
-## Architecture Overview
+------------------------------------------------------------------------
 
-The project follows a layered architecture:
+##  Docker Setup (Production-like)
 
-- HTTP views for server-rendered pages
-- API views for JSON-based access
-- Service layer for shared business logic
-- Django ORM as data layer
+The application is fully containerized:
 
----
+-   `web` → Django + Gunicorn\
+-   `db` → PostgreSQL
 
-## Project Structure
+Docker Compose orchestrates both services in a shared network.
+
+------------------------------------------------------------------------
+
+## ️ Environment Configuration
+
+DATABASE_URL=postgres://user:password@db:5432/shop\
+ENV=production
+
+``` python
+ENV = os.getenv("ENV", "development").lower()
+DEBUG = ENV != "production"
 ```
-autoparts_shop_mvp/
-├── apps/
-│   ├── catalog/          # Django app: product catalog
-│   ├── users/     # Authentication (HTML + API)
-│   └──cart/      # Cart logic (guest + user)
-│
-├── fixtures/
-│   └── initial_data.json # initial database data (fixtures)
-├── manage.py
-├── requirements.txt
-└── README.md
-```
----
 
-## Initial Data Generation
+------------------------------------------------------------------------
 
-Initial product data was generated using custom data seeding scripts
-based on a structured product image dataset.
-The data pipeline supports both local image storage and cloud-based media storage via Cloudinary.
+## Architecture
 
-The scripts perform:
-- Parsing product image directories
-- Generating product metadata (price, description, stock availability)
-- Creating database-ready product records
-- Exporting generated data into JSON fixtures
+-   Views --- HTTP & API endpoints\
+-   Service layer --- business logic\
+-   Models (ORM) --- data layer
 
-This approach allows fast bootstrapping of a fresh database and
-simplifies deployment to new environments.
+------------------------------------------------------------------------
 
----
+##  Features
 
-## Testing & CI/CD
+-   Product catalog (pagination, search, filtering)
+-   Cart system (guest + user)
+-   Authentication (session + JWT)
+-   REST API
+-   Middleware logging
 
-### Automated Tests
+------------------------------------------------------------------------
 
-The project includes comprehensive automated tests covering:
+##  Author
 
-- **Models**: `Product`, `Tag`, `ProductTag`, `Cart`, `CartItem`
-- **Service Functions**: Adding/removing products in the cart
-- **API Endpoints** (Django REST Framework):
-  - `POST /api/cart/add/`
-  - `POST /api/cart/decrease/`
-  - `GET /api/cart/`
-
-These tests ensure that core functionality works as expected and prevent regressions during development.
-
-### Continuous Integration / Deployment (CI/CD)
-
-A CI/CD pipeline has been configured using **GitHub Actions** and **Render**:
-
-- **GitHub Actions** runs automated tests on every push to the repository.
-- **Deploy to Render** only occurs if all tests pass, preventing broken code from reaching production.
-- **Environment variables and secrets** (like `DJANGO_SECRET_KEY`) are securely managed in GitHub Secrets.
-
-This setup guarantees that the application is automatically tested and safely deployed, maintaining stability and reliability in production.
-
-
----
-
-## Authentication
-
-- HTML: session-based authentication
-- API: JWT-based authentication (access + refresh)
-- Guest carts are merged into user carts on login or registration
-
----
-
-## API Endpoints (examples)
-
-POST /api/register/
-POST /api/login/
-GET  /api/cart/
-
----
-
-## Search, Sorting and Filtering
-
-- Search is implemented using `icontains` on product titles
-- Sorting is controlled via GET parameters
-- Tag filtering uses an explicit Many-to-Many table
-- All GET parameters are preserved across pagination and navigation
-- Implemented using Django ORM and query optimization patterns
-
----
-
-## Visit Logging
-
-A custom Django middleware logs page visits:
-- URL path
-- Client IP address
-- Timestamp
-
-Static files and admin pages are excluded.  
-All records can be viewed through Django admin.
-Demonstrates custom middleware and request lifecycle understanding.
-
----
-
-## Environment Variables
-
-The project uses environment variables for sensitive configuration:
-
-SECRET_KEY
-DATABASE_URL
-CLOUDINARY_API_KEY
-CLOUDINARY_API_SECRET
-CLOUDINARY_CLOUD_NAME
-
-A `.env` file is used locally and excluded from version control.
-
----
-
-## Local Setup
-
-1. Clone Repository
-    git clone https://github.com/Igor-prog41/autoparts_shop_mvp.git
-    cd autoparts_shop_mvp
-
-2. Create Virtual Environment
-    python -m venv venv
-    Activate environment:
-
-    Windows:
-    venv\Scripts\activate
-    
-    Linux / Mac:
-    source venv/bin/activate
-
-3. Install Dependencies
-    pip install -r requirements.txt
-
-4. Configure Environment Variables
-    Create .env file in project root and add:
-    
-    SECRET_KEY=your_secret_key
-    DATABASE_URL=your_database_url
-    
-    CLOUDINARY_CLOUD_NAME=your_cloud_name
-    CLOUDINARY_API_KEY=your_api_key
-    CLOUDINARY_API_SECRET=your_api_secret
-    
-    Product images are stored in Cloudinary and delivered via public CDN URLs.
-    
-    Cloudinary API credentials are required only for uploading media 
-    or running initial data seeding scripts.
-
-5. Apply Migrations
-    python manage.py migrate
-
-6. Load Initial Product Data
-    Populate database with initial catalog data:
-    python manage.py seed_products
-    
-    This command creates initial product records and links product images hosted in Cloudinary. 
-    If Cloudinary credentials are missing, the seeding process may fail.
-
-7. Run Development Server
-    python manage.py runserver
-    Open in browser:
-    http://127.0.0.1:8000/
-
-Notes:
-    If you only need to run the project with existing product image URLs,
-    Cloudinary API credentials are not required unless you plan to upload new media 
-    or regenerate initial data.
-
----
-
-## Admin Panel
-
-Django admin is available at:
-
-/admin/
-It is used to:
-
-View logged page visits
-
----
-
-## Roadmap
-
-- Order and payment flow (test mode)
-- Automated tests
-- Dockerization
-
----
-
-## Notes
-
-This project is intentionally kept simple and focused on backend fundamentals:
-* clear data relationships
-* predictable request handling
-* production-aware configuration
-* It is not intended to be a full e-commerce solution.
-
---- 
-
-##  Contact
-
-Author: Igor Iaroshevych  
-Location: Canada (Alberta)
-GitHub: https://github.com/Igor-prog41
-
+Igor Iaroshevych\
+Canada (Alberta)\
+https://github.com/Igor-prog41
